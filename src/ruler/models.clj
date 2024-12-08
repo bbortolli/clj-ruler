@@ -21,6 +21,9 @@
   (when err
     {:key k :pred p}))
 
+(defn- type? [t v]
+  (some #(instance? % v) (type->types t)))
+
 (defn- req-key? [k]
   (contains? keys-req k))
 
@@ -68,9 +71,7 @@
   [k {:keys [key type]} data]
   (let [val (get data key)
         val? (some? val)
-        types (type->types type)
-        no-instance? (not (some #(instance? % val) types))
-        err (and val? no-instance?)]
+        err (and val? (not (type? type val)))]
     (->err err key k)))
 
 (defmethod key-validation :req
@@ -169,6 +170,13 @@
   [k {:keys [key format-fn]} data]
   (let [val (get data key)
         err (not (format-fn val))]
+    (->err err key k)))
+
+(defmethod key-validation :of
+  [k {:keys [key type of]} data]
+  (let [val (get data key)
+        err (or (not= clojure.lang.IPersistentVector type)
+                (not-every? #(type? of %) val))]
     (->err err key k)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

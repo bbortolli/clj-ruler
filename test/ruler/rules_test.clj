@@ -24,7 +24,8 @@
     (is (nil? (rules/check-rule {:key :name :type String :contains [1 2]})) "With optional field: contains")
     (is (nil? (rules/check-rule {:key :name :type String :contains #{"1" "2"}})) "With optional field: contains")
     (is (nil? (rules/check-rule {:key :name :type String :format #"\d{4}"})) "With optional field: format")
-    (is (nil? (rules/check-rule {:key :name :type String :format-fn (fn [_] true)})) "With optional field: format-fn"))
+    (is (nil? (rules/check-rule {:key :name :type String :format-fn (fn [_] true)})) "With optional field: format-fn")
+    (is (nil? (rules/check-rule {:key :name :type rules/Vector :of String})) "With optional field: of"))
 
   (testing "Invalid rules"
     (is (thrown? java.lang.AssertionError (rules/check-rule {})) "Missing required fields")
@@ -42,4 +43,6 @@
     (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type Integer :max-length "99"})) "Invalid values for field: max-length")
     (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type Integer :contains some?})) "Invalid values for field: contains")
     (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type Integer :format {:test 1}})) "Invalid values for field: format")
-    (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type Integer :format-fn 1})) "Invalid values for field: format-fn")))
+    (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type Integer :format-fn 1})) "Invalid values for field: format-fn")
+    (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type rules/Vector :of "1"})) "Invalid values for field: of")
+    (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type String :of "1"})) "Invalid values for field: of")))
