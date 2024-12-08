@@ -34,9 +34,8 @@
     (swap! ctx-config* assoc k value)))
 
 (defn- merge-opts [model]
-  (if-let [global-opts (:global-opts @ctx-config*)]
-    (update model :opts merge global-opts)
-    model))
+  (let [global-opts (:global-opts @ctx-config*)]
+    (update model :opts merge global-opts)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Internal implementations.

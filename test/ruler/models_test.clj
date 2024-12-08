@@ -46,11 +46,20 @@
    :min -9999
    :max 9999})
 
+(def test-rule3
+  {:key :test
+   :type clojure.lang.IPersistentVector
+   :req true
+   :of Integer})
+
 (def test-data
   {:test "string"})
 
 (def test-data2
   {:test 12})
+
+(def test-data3
+  {:test [1 2]})
 
 (def test-model [{:key :name :type String :required true}])
 
@@ -70,7 +79,8 @@
     (is (nil? (models/key-validation :length      test-rule test-data))   ":length")
     (is (nil? (models/key-validation :contains    test-rule test-data))   ":contains")
     (is (nil? (models/key-validation :format      test-rule test-data))   ":format")
-    (is (nil? (models/key-validation :format-fn   test-rule test-data))   ":format-fn"))
+    (is (nil? (models/key-validation :format-fn   test-rule test-data))   ":format-fn")
+    (is (nil? (models/key-validation :of          test-rule3 test-data3)) ":of"))
 
   (testing "Invalid data value"
     (is (= {:key :test :pred :type}        (models/key-validation :type        test-rule   {:test 1.1})) ":type")
@@ -86,7 +96,8 @@
     (is (= {:key :test :pred :length}      (models/key-validation :length      test-rule   {:test "ble"})) ":length")
     (is (= {:key :test :pred :contains}    (models/key-validation :contains    test-rule   {:test "bli"})) ":contains")
     (is (= {:key :test :pred :format}      (models/key-validation :format      test-rule   {:test "blu"})) ":format")
-    (is (= {:key :test :pred :format-fn}   (models/key-validation :format-fn   (assoc test-rule :format-fn (fn [_] false)) {:test "teste"})) ":format-fn")))
+    (is (= {:key :test :pred :format-fn}   (models/key-validation :format-fn   (assoc test-rule :format-fn (fn [_] false)) {:test "teste"})) ":format-fn")
+    (is (= {:key :test :pred :of}          (models/key-validation :of          test-rule3  {:test ["blu"]})) ":of")))
 
 (deftest opt-key-validation-test
 

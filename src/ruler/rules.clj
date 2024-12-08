@@ -46,7 +46,8 @@
    :max-length  integer?
    :contains    vec-or-set
    :format      regex?
-   :format-fn   fn?})
+   :format-fn   fn?
+   :of          allowed-type?})
 
 (def key->type-text
   {:key         "Keyword"
@@ -63,7 +64,8 @@
    :max-length  "Integer"
    :contains    "Vector or Set"
    :format      "Regex"
-   :format-fn   "Function"})
+   :format-fn   "Function"
+   :of          "'allowed-types'. Check docs for more information"})
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rules.
