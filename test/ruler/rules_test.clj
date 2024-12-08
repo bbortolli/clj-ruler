@@ -45,4 +45,4 @@
     (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type Integer :format {:test 1}})) "Invalid values for field: format")
     (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type Integer :format-fn 1})) "Invalid values for field: format-fn")
     (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type rules/Vector :of "1"})) "Invalid values for field: of")
-    (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type String :of "1"})) "Invalid values for field: of")))
+    (is (thrown? java.lang.AssertionError (rules/check-rule {:key :name :type String :of "1"})) "Invalid :type to use with :of")))
